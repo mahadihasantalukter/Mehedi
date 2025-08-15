@@ -107,7 +107,7 @@ class _StudentListState extends State<StudentList> {
               },
             );
           } else {
-            return const Center(child: Text('No students found.'));
+            return const Center(child: Text('No  found.'));
           }
         },
       ),
