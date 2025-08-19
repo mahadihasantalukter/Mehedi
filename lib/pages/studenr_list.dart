@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:student_lists/Model/studen_json.dart';
 
-
 class StudentList extends StatefulWidget {
   const StudentList({super.key});
 
@@ -40,7 +39,10 @@ class _StudentListState extends State<StudentList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Student List')),
+      appBar: AppBar(
+        backgroundColor: Colors.blue[100],
+        title: const Text('Student List'),
+      ),
       body: FutureBuilder<List<Student>>(
         future: _students,
         builder: (context, snapshot) {
@@ -50,13 +52,11 @@ class _StudentListState extends State<StudentList> {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData) {
             return ListView.builder(
-              itemCount: snapshot.data!.length,
+              itemCount: 1,
               itemBuilder: (context, index) {
                 final student = snapshot.data![index];
                 return InkWell(
-                  onTap: () {
-                    
-                  },
+                  onTap: () {},
                   child: Container(
                     margin: const EdgeInsets.all(6),
                     padding: const EdgeInsets.symmetric(
@@ -76,38 +76,33 @@ class _StudentListState extends State<StudentList> {
                         ),
                       ],
                     ),
-                    child: Column(
+                    child: Row(
                       children: [
-                        Row(
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(student.imageUrl),
+                        ),
+                        const SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundImage: AssetImage(''),
+                            Text(
+                              student.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  student.name,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                  
-                                Text(student.address),
-                              ],
-                            ),
+                            Text(student.address),
                           ],
                         ),
                       ],
                     ),
-                    
                   ),
                 );
               },
             );
           } else {
-            return const Center(child: Text('No  found.'));
+            return const Center(child: Text('No data found.'));
           }
         },
       ),
